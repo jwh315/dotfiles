@@ -32,7 +32,6 @@ brew_install 'php'
 brew_install 'grep'
 brew_install 'ripgrep'
 brew_install 'jq'
-brew_install 'docker'
 
 
 which -s node 
