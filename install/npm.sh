@@ -1,4 +1,3 @@
 source ~/.zprofile
 
-npm install -g yarn
-
+npm install -g yarn alks
