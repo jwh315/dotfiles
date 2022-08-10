@@ -1,0 +1,22 @@
+[user]
+	name = Jacob Holmes 
+	email = Jacob.Holmes@coxautoinc.com
+[core]
+	autocrlf = input
+[alias]
+	prune-remote = git branch -r --merged master | egrep -v \"(^\\*|master|dev)\" | cut -d'/' -f2 | xargs git push origin --delete
+	clean-branches = !git branch | grep -v master | xargs git branch -D
+	pushd = push -u origin HEAD
+[credential "https://git-codecommit.us-east-1.amazonaws.com"]
+  helper =
+  helper = !aws codecommit credential-helper $@
+  useHttpPath = true
+[pull]
+	rebase = true
+[init]
+	defaultBranch = master
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
