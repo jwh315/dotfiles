@@ -12,7 +12,8 @@ local servers = {
   "yamlls",
   "csharp_ls",
   "omnisharp",
-  "phpactor"
+  "phpactor",
+  "intelephense"
 }
 
 lsp_installer.setup()
