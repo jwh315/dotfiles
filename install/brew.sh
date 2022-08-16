@@ -18,7 +18,6 @@ brew_install() {
     fi
 }
 
-brew_install 'iterm2'
 brew_install 'curl'
 brew_install 'grep'
 brew_install 'awscli'
