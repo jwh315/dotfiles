@@ -189,6 +189,11 @@ return packer.startup(function(use)
   use "OmniSharp/omnisharp-vim"
   use "mg979/vim-visual-multi"
 
+  use {
+    "voldikss/vim-floaterm", 
+    commit = "e3f2d94d722603f8b65088ea1d7e0329951985bd",
+  }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then
