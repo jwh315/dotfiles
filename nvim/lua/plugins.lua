@@ -194,6 +194,30 @@ return packer.startup(function(use)
     commit = "e3f2d94d722603f8b65088ea1d7e0329951985bd",
   }
 
+  use "mfussenegger/nvim-dap"
+  -- Debugging
+  -- use {
+  --   "mfussenegger/nvim-dap",
+  --   opt = true,
+  --   event = "BufReadPre",
+  --   keys = { [[<leader>d]] },
+  --   module = { "dap" },
+  --   wants = { "nvim-dap-virtual-text", "DAPInstall.nvim", "nvim-dap-ui", "nvim-dap-python", "which-key.nvim" },
+  --   requires = {
+  --     -- "alpha2phi/DAPInstall.nvim",
+  --     -- { "Pocco81/dap-buddy.nvim", branch = "dev" },
+  --     "theHamsta/nvim-dap-virtual-text",
+  --     "rcarriga/nvim-dap-ui",
+  --     "mfussenegger/nvim-dap-python",
+  --     "nvim-telescope/telescope-dap.nvim",
+  --     { "leoluz/nvim-dap-go", module = "dap-go" },
+  --     { "jbyuki/one-small-step-for-vimkind", module = "osv" },
+  --   },
+  --   config = function()
+  --     require("config.dap.csharp").setup()
+  --   end,
+  -- }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then

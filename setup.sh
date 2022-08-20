@@ -9,7 +9,7 @@ DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir -p ~/.config
 
 ln -sf "$DOTFILES_DIR/nvim" ~/.config
-ln -sf "$DOTFILES_DIR/kity" ~/.config
+ln -sf "$DOTFILES_DIR/kitty" ~/.config
 ln -sf "$DOTFILES_DIR/.gitconfig" ~/.gitconfig
 
 # Install Homebrew

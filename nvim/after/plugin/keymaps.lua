@@ -42,5 +42,5 @@ keymap("n", "<Down>", ":resize +1<CR>", default_opts)
 keymap("n", "<leader>e", ":Lex 30<CR>", default_opts)
 
 -- FloatTerm
-keymap("n", "<leader>t", ":FloatermToggle scratch<CR>", default_opts)
-keymap("t", "<leader>t", "<C-\\><C-n>:FloatermToggle scratch<CR>", default_opts)
+keymap("n", "<S-t>", ":FloatermToggle scratch<CR>", default_opts)
+keymap("t", "<S-t>", "<C-\\><C-n>:FloatermToggle scratch<CR>", default_opts)
