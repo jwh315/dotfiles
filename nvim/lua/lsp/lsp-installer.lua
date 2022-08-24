@@ -11,6 +11,7 @@ local servers = {
   "jsonls",
   "yamlls",
   "csharp_ls",
+  "omnisharp",
   "phpactor",
   "intelephense",
 }
