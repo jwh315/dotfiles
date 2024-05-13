@@ -19,7 +19,7 @@
 ========                                                     ========
 =====================================================================
 =====================================================================
-
+tpo
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
@@ -843,6 +843,10 @@ require('lazy').setup {
   -- { import = 'custom.plugins' },
 }
 
+-- Random settings that I have added to customize nvim to my liking ( a.k.a. I don't know where to put these yet )
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
 vim.cmd 'colorscheme gruvbox'
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
