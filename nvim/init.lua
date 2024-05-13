@@ -19,7 +19,6 @@
 ========                                                     ========
 =====================================================================
 =====================================================================
-tpo
 What is Kickstart?
 
   Kickstart.nvim is *not* a distribution.
@@ -259,6 +258,8 @@ require('lazy').setup {
 
   -- plugint to install our preferred theme
   { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
+
+  { 'phaazon/hop.nvim', opts = {} },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following lua:
@@ -844,6 +845,15 @@ require('lazy').setup {
 }
 
 -- Random settings that I have added to customize nvim to my liking ( a.k.a. I don't know where to put these yet )
+
+-- Keybinds for hop plugin
+local hop = require 'hop'
+local directions = require('hop.hint').HintDirection
+
+vim.keymap.set('', 'f', function()
+  hop.hint_char1 { current_line_only = false }
+end, { remap = true })
+
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 vim.cmd 'colorscheme gruvbox'
