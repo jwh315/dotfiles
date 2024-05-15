@@ -256,8 +256,10 @@ require('lazy').setup {
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  -- plugint to install our preferred theme
+  -- plugin to install our preferred theme
   { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
+
+  { 'pocco81/auto-save.nvim' },
 
   { 'phaazon/hop.nvim', opts = {} },
 
@@ -856,7 +858,8 @@ end, { remap = true })
 
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
-vim.cmd 'colorscheme gruvbox'
+vim.opt.swapfile = false
 
+vim.cmd 'colorscheme gruvbox'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
