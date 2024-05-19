@@ -257,10 +257,9 @@ require('lazy').setup {
   { 'numToStr/Comment.nvim', opts = {} },
 
   -- plugin to install our preferred theme
-  { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
 
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
-
   {
     'kdheepak/lazygit.nvim',
     cmd = {
@@ -903,6 +902,6 @@ vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 vim.opt.swapfile = false
 
-vim.cmd 'colorscheme gruvbox'
+vim.cmd 'colorscheme catppuccin'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
