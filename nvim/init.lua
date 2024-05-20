@@ -259,6 +259,8 @@ require('lazy').setup {
   -- plugin to install our preferred theme
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
 
+  { 'm4xshen/autoclose.nvim', opts = {} },
+
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
   {
     'kdheepak/lazygit.nvim',
