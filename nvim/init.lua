@@ -166,6 +166,9 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagn
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+vim.keymap.set('n', '<leader>w', ':w<CR>', { desc = 'Save' })
+vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -256,12 +259,23 @@ require('lazy').setup {
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
+  {
+    'startup-nvim/startup.nvim',
+    requires = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('startup').setup()
+    end,
+  },
+
   -- plugin to install our preferred theme
   { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+
+  { 'max397574/better-escape.nvim', opts = {} },
 
   { 'm4xshen/autoclose.nvim', opts = {} },
 
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
+
   {
     'kdheepak/lazygit.nvim',
     cmd = {
@@ -278,7 +292,7 @@ require('lazy').setup {
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-      { '<leader>lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
+      { 'lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
     },
   },
 
@@ -352,7 +366,6 @@ require('lazy').setup {
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -547,10 +560,6 @@ require('lazy').setup {
           --  Symbols are things like variables, functions, types, etc.
           map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
 
-          -- Fuzzy find all the symbols in your current workspace
-          --  Similar to document symbols, except searches over your whole project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
           -- Rename the variable under your cursor
           --  Most Language Servers support renaming across files, etc.
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -720,6 +729,8 @@ require('lazy').setup {
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'onsails/lspkind.nvim',
+      'hrsh7th/cmp-buffer',
 
       -- If you want to add a bunch of pre-configured snippets,
       --    you can use this plugin to help you. It even has snippets
@@ -731,6 +742,8 @@ require('lazy').setup {
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require 'lspkind'
+
       luasnip.config.setup {}
 
       cmp.setup {
@@ -784,6 +797,19 @@ require('lazy').setup {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'buffer' },
+        },
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol_text',
+            menu = {
+              buffer = '[Buffer]',
+              nvim_lsp = '[LSP]',
+              luasnip = '[LuaSnip]',
+              nvim_lua = '[Lua]',
+              latex_symbols = '[Latex]',
+            },
+          },
         },
       }
     end,
