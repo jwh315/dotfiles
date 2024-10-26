@@ -1,5 +1,4 @@
 --[[
-
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -40,7 +39,7 @@ What is Kickstart?
     - :help lua-guide
     - (or HTML version): https://neovim.io/doc/user/lua-guide.html
 
-Kickstart Guide:
+Guide:
 
   TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
 
@@ -98,7 +97,7 @@ vim.g.maplocalleader = ' '
 vim.opt.number = true
 -- You can also add relative line numbers, for help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -267,8 +266,16 @@ require('lazy').setup {
     end,
   },
 
-  -- plugin to install our preferred theme
-  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  -- my plugins
+  {
+    'seblj/roslyn.nvim',
+    ft = 'cs',
+    opts = {
+      -- your configuration comes here; leave empty for default settings
+    },
+  },
+
+  { 'navarasu/onedark.nvim', name = 'onedark', priority = 1000 },
 
   { 'max397574/better-escape.nvim', opts = {} },
 
@@ -277,23 +284,13 @@ require('lazy').setup {
   { 'ellisonleao/glow.nvim', config = true, cmd = 'Glow' },
 
   {
-    'kdheepak/lazygit.nvim',
-    cmd = {
-      'LazyGit',
-      'LazyGitConfig',
-      'LazyGitCurrentFile',
-      'LazyGitFilter',
-      'LazyGitFilterCurrentFile',
-    },
-    -- optional for floating window border decoration
+    'NeogitOrg/neogit',
     dependencies = {
-      'nvim-lua/plenary.nvim',
+      'nvim-lua/plenary.nvim', -- required
+      'sindrets/diffview.nvim', -- optional - Diff integration
+      'nvim-telescope/telescope.nvim',
     },
-    -- setting the keybinding for LazyGit with 'keys' is recommended in
-    -- order to load the plugin when the command is run for the first time
-    keys = {
-      { 'lg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
-    },
+    config = true,
   },
 
   {
@@ -315,7 +312,7 @@ require('lazy').setup {
       vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 
       -- Open parent directory in floating window
-      vim.keymap.set('n', '<space>-', require('oil').toggle_float)
+      vim.keymap.set('n', '<leader>-', require('oil').toggle_float)
     end,
   },
 
@@ -434,7 +431,17 @@ require('lazy').setup {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true,
+          },
+          grep_string = {
+            additional_args = { '--hidden' },
+          },
+          live_grep = {
+            additional_args = { '--hidden' },
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -624,7 +631,10 @@ require('lazy').setup {
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         -- tsserver = {},
-        --
+        terraformls = {
+          filetypes = { 'tf', 'terraform', 'tfvars', 'hcl', 'terraform-vars' },
+          cmd = { '/opt/homebrew/bin/terraform-ls', 'serve' },
+        },
 
         lua_ls = {
           -- cmd = {...},
@@ -689,10 +699,17 @@ require('lazy').setup {
     'stevearc/conform.nvim',
     opts = {
       notify_on_error = false,
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      format_on_save = function(bufnr)
+        local bufname = vim.api.nvim_buf_get_name(bufnr)
+        if string.find(bufname, 'master%-control') then
+          return
+        end
+
+        return {
+          timeout_ms = 500,
+          lsp_fallback = true,
+        }
+      end,
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
@@ -712,13 +729,8 @@ require('lazy').setup {
       -- Snippet Engine & its associated nvim-cmp source
       {
         'L3MON4D3/LuaSnip',
+        dependencies = { 'rafamadriz/friendly-snippets' },
         build = (function()
-          -- Build Step is needed for regex support in snippets
-          -- This step is not supported in many windows environments
-          -- Remove the below condition to re-enable on windows
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
           return 'make install_jsregexp'
         end)(),
       },
@@ -832,6 +844,8 @@ require('lazy').setup {
     end,
   },
 
+  { 'dominikduda/vim_current_word' },
+
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -852,6 +866,9 @@ require('lazy').setup {
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+
+      -- Highlight other occurrences of the word under cursor
+      -- require('mini.cursorword').setup()
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -896,13 +913,15 @@ require('lazy').setup {
     end,
   },
 
+  { 'nvim-treesitter/playground' },
+
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- put them in the right spots if you want.
 
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for kickstart
   --
-  --  Here are some example plugins that I've included in the kickstart repository.
+  --  Here are some example plugins that I've included the kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
@@ -922,7 +941,7 @@ require('lazy').setup {
 local hop = require 'hop'
 local directions = require('hop.hint').HintDirection
 
-vim.keymap.set('', 'f', function()
+vim.keymap.set('', '<leader>f', function()
   hop.hint_char1 { current_line_only = false }
 end, { remap = true })
 
@@ -930,6 +949,22 @@ vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 vim.opt.swapfile = false
 
-vim.cmd 'colorscheme catppuccin'
+vim.cmd 'colorscheme onedark'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+require('luasnip.loaders.from_vscode').lazy_load()
+
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+-- vim.bo.softtabstop = 1
+--
+-- let g = {}
+-- let g:VM_maps = {}
+-- let g:VM_maps["Add Cursor Down"]             = '∆'  "/ M-j"
+-- let g:VM_maps["Add Cursor Up"]               = '˚'  "/ M-k"
+--
+vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, { command = 'silent! update' })
+vim.lsp.set_log_level 'off'
