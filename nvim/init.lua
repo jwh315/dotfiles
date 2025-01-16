@@ -468,19 +468,12 @@ require('lazy').setup {
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
+  {
     'folke/tokyonight.nvim',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
+    lazy = false,
+    priority = 1000,
     config = function()
-      -- Load the colorscheme here
       vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
     end,
   },
@@ -493,40 +486,17 @@ require('lazy').setup {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     config = function()
-      -- Better Around/Inside textobjects
-      --
-      -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
-      -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      --
-      -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- - sd'   - [S]urround [D]elete [']quotes
-      -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
-      -- Highlight other occurrences of the word under cursor
-      -- require('mini.cursorword').setup()
-
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
       local statusline = require 'mini.statusline'
       statusline.setup()
 
-      -- You can configure sections in the statusline by overriding their
-      -- default behavior. For example, here we set the section for
-      -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
         return '%2l:%-2v'
       end
-
-      -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
 
@@ -534,8 +504,6 @@ require('lazy').setup {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     config = function()
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
         ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
@@ -544,43 +512,13 @@ require('lazy').setup {
         highlight = { enable = true },
         indent = { enable = true },
       }
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
 
   { 'nvim-treesitter/playground' },
-
-  -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
-  -- init.lua. If you want these files, they are in the repository, so you can just download them and
-  -- put them in the right spots if you want.
-
-  -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for kickstart
-  --
-  --  Here are some example plugins that I've included the kickstart repository.
-  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
-
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    This is the easiest way to modularize your config.
-  --
-  --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
 }
 
--- Random settings that I have added to customize nvim to my liking ( a.k.a. I don't know where to put these yet )
-
--- Keybinds for hop plugin
 local hop = require 'hop'
-local directions = require('hop.hint').HintDirection
 
 vim.keymap.set('n', 'f', function()
   hop.hint_char1 { current_line_only = false }
@@ -591,8 +529,6 @@ vim.opt.spell = true
 vim.opt.swapfile = false
 
 vim.cmd 'colorscheme onedark'
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
 
 require('luasnip.loaders.from_vscode').lazy_load()
 
@@ -600,15 +536,6 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.autoindent = true
--- vim.bo.softtabstop = 1
---
--- let g = {}
--- let g:VM_maps = {}
--- let g:VM_maps["Add Cursor Down"]             = '∆'  "/ M-j"
--- let g:VM_maps["Add Cursor Up"]               = '˚'  "/ M-k"
---
--- vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, { command = 'silent! update' })
 vim.lsp.set_log_level 'ERROR'
 
--- vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
