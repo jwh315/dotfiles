@@ -360,6 +360,8 @@ require('lazy').setup {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        -- ensure_installed = true,
+        -- automatic_installation = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -388,6 +390,8 @@ require('lazy').setup {
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        terraform = { 'terraform_fmt' },
+        hcl = { 'terraform_fmt' },
       },
     },
   },
@@ -536,6 +540,8 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.autoindent = true
-vim.lsp.set_log_level 'ERROR'
+vim.lsp.set_log_level 'off'
 
+vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+vim.opt.foldlevelstart = 99
