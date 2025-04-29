@@ -71,6 +71,19 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+local copilot_commit_prompt = [[
+Write a commit message for the staged changes using a conventional commit.
+
+The scope of the commit title should be derived from the system context. Given the
+output starts with the chars US. Otherwise the scope should not be included.
+
+Keep the title under 50 characters and wrap message at 72 characters.
+
+The commit body should be bullet point formatted.
+
+Format as a gitcommit code block.
+]]
+
 require('lazy').setup {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   {
@@ -391,7 +404,6 @@ require('lazy').setup {
       formatters_by_ft = {
         lua = { 'stylua' },
         terraform = { 'terraform_fmt' },
-        hcl = { 'terraform_fmt' },
       },
     },
   },
@@ -520,6 +532,27 @@ require('lazy').setup {
   },
 
   { 'nvim-treesitter/playground' },
+
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    dependencies = {
+      { 'github/copilot.vim' }, -- or zbirenbaum/copilot.lua
+      { 'nvim-lua/plenary.nvim', branch = 'master' }, -- for curl, log and async functions
+    },
+    build = 'make tiktoken', -- Only on MacOS or Linux
+    opts = {
+      prompts = {
+        Commit = {
+          prompt = copilot_commit_prompt,
+          context = { 'git:staged', "system:`git branch --show-current | cut -d'/' -f1`" },
+        },
+      },
+    },
+    keys = {
+      { '<leader>ccv', '<cmd>CopilotChatToggle<cr>', desc = 'Chat with Copilot' },
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
 }
 
 local hop = require 'hop'
