@@ -1,214 +1,155 @@
-# kickstart.nvim
+# Neovim Configuration
 
 ## Introduction
 
-A starting point for Neovim that is:
+A modular Neovim configuration based on kickstart.nvim that is:
 
-* Small
-* Single-file
-* Completely Documented
+* **Modular** - Each plugin has its own file for easy maintenance
+* **Organized** - Core settings separated from plugin configurations
+* **Extensible** - Easy to add, remove, or modify plugins
+* **Well-documented** - Clear structure and comments
 
-**NOT** a Neovim distribution, but instead a starting point for your configuration.
+This configuration builds upon kickstart.nvim with a structured, multi-file approach for better organization and maintainability.
+
+## Features
+
+- **LSP Support**: Configured for Lua, Terraform, and C# (Roslyn)
+- **Completion**: nvim-cmp with multiple sources including Copilot
+- **File Navigation**: Telescope for fuzzy finding, Oil for file management
+- **Git Integration**: Gitsigns, Neogit, and Copilot Chat for commits
+- **Themes**: OneDark (default) and TokyoNight available
+- **Enhanced Editing**: Treesitter, auto-pairs, commenting, hop navigation
+- **Terminal Integration**: Tmux navigator support
+
+## File Structure
+
+```
+nvim/
+├── init.lua                    # Main entry point
+├── lua/
+│   ├── config/
+│   │   ├── options.lua        # Vim options and settings
+│   │   ├── keymaps.lua        # Key mappings
+│   │   └── autocmds.lua       # Auto commands
+│   ├── plugins/               # Individual plugin configurations
+│   │   ├── lsp.lua           # LSP configuration
+│   │   ├── cmp.lua           # Completion
+│   │   ├── telescope.lua     # Fuzzy finder
+│   │   ├── treesitter.lua    # Syntax highlighting
+│   │   ├── onedark.lua       # OneDark theme
+│   │   └── ... (one file per plugin)
+│   └── custom/
+│       └── plugins/
+│           └── init.lua      # Custom plugin loader
+├── init_original.lua         # Backup of original configuration
+└── AGENTS.md                 # Development guide
+```
 
 ## Installation
 
-### Install Neovim
+### Prerequisites
 
-Kickstart.nvim targets *only* the latest
-['stable'](https://github.com/neovim/neovim/releases/tag/stable) and latest
-['nightly'](https://github.com/neovim/neovim/releases/tag/nightly) of Neovim.
-If you are experiencing issues, please make sure you have the latest versions.
+- Neovim 0.9+ (latest stable recommended)
+- Git
+- Make (for telescope-fzf-native)
+- ripgrep
+- A C compiler (gcc)
+- Node.js (for some LSP servers)
 
-### Install External Dependencies
+### Install
 
-> **NOTE**
-> [Backup](#FAQ) your previous configuration (if any exists)
+1. **Backup existing configuration** (if any):
+   ```bash
+   mv ~/.config/nvim ~/.config/nvim.backup
+   ```
 
-External Requirements:
-- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
-- [ripgrep](https://github.com/BurntSushi/ripgrep#installation)
-- Language Setup:
-  - If want to write Typescript, you need `npm`
-  - If want to write Golang, you will need `go`
-  - etc.
+2. **Clone this repository**:
+   ```bash
+   git clone <your-repo-url> ~/.config/nvim
+   ```
 
-> **NOTE**
-> See [Windows Installation](#Windows-Installation) to double check any additional Windows notes
+3. **Start Neovim**:
+   ```bash
+   nvim
+   ```
 
-Neovim's configurations are located under the following paths, depending on your OS:
+Lazy.nvim will automatically install all plugins on first run.
 
-| OS | PATH |
-| :- | :--- |
-| Linux, MacOS | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
-| Windows (cmd)| `%userprofile%\AppData\Local\nvim\` |
-| Windows (powershell)| `$env:USERPROFILE\AppData\Local\nvim\` |
+## Usage
 
-### Install Kickstart
+### Key Mappings
 
-Clone kickstart.nvim:
+- **Leader key**: `<Space>`
+- **File operations**: `<leader>w` (save), `<leader>q` (quit)
+- **Search**: `<leader>sf` (find files), `<leader>sg` (live grep)
+- **LSP**: `gd` (go to definition), `gr` (references), `K` (hover)
+- **File browser**: `-` (open Oil), `<leader>-` (Oil float)
+- **Navigation**: `f` (hop to character), `<C-h/j/k/l>` (window nav)
 
-<details><summary> Linux and Mac </summary>
+### Adding Plugins
 
-```sh
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-```
+1. **Create a new file** in `lua/plugins/`:
+   ```bash
+   touch lua/plugins/my-plugin.lua
+   ```
 
-</details>
+2. **Add plugin configuration**:
+   ```lua
+   return {
+     'author/plugin-name',
+     config = function()
+       -- Plugin setup
+     end,
+   }
+   ```
 
-<details><summary> Windows </summary>
+3. **Restart Neovim** - the plugin will be automatically loaded
 
-If you're using `cmd.exe`:
+### Themes
 
-```
-git clone https://github.com/nvim-lua/kickstart.nvim.git %userprofile%\AppData\Local\nvim\
-```
+- **Default**: OneDark
+- **Alternative**: TokyoNight (use `:colorscheme tokyonight-night`)
 
-If you're using `powershell.exe`
+To change the default theme, modify the priority settings in the theme files.
 
-```
-git clone https://github.com/nvim-lua/kickstart.nvim.git $env:USERPROFILE\AppData\Local\nvim\
-```
+### LSP Configuration
 
-</details>
+LSP servers are configured in `lua/plugins/lsp.lua`. Currently supports:
+- **Lua**: lua_ls
+- **Terraform**: terraformls
+- **C#**: Roslyn (via separate plugin)
 
-### Post Installation
+To add a new LSP server, add it to the `servers` table in the LSP configuration.
 
-Start Neovim
+## Customization
 
-```sh
-nvim
-```
+### Core Settings
 
-That's it! Lazy will install all the plugins you have. Use `:Lazy` to view
-current plugin status.
+- **Options**: Edit `lua/config/options.lua`
+- **Keymaps**: Edit `lua/config/keymaps.lua`
+- **Autocmds**: Edit `lua/config/autocmds.lua`
 
-Read through the `init.lua` file in your configuration folder for more
-information about extending and exploring Neovim.
+### Plugin Settings
 
-### Getting Started
+Each plugin has its own file in `lua/plugins/`. Modify the specific plugin file to customize behavior.
 
-[The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
+### Custom Plugins
 
-### Recommended Steps
+Add custom plugins in `lua/custom/plugins/` - they'll be automatically loaded.
 
-[Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo
-(so that you have your own copy that you can modify) and then installing you
-can install to your machine using the methods above.
+## Development
 
-> **NOTE**
-> Your fork's url will be something like this: `https://github.com/<your_github_username>/kickstart.nvim.git`
+See `AGENTS.md` for development guidelines including:
+- Code formatting with Stylua
+- File structure conventions
+- Plugin configuration patterns
 
-#### Examples of adding popularly requested plugins
+## Troubleshooting
 
-NOTE: You'll need to uncomment the line in the init.lua that turns on loading custom plugins.
+1. **Plugin issues**: Use `:Lazy` to check plugin status
+2. **LSP issues**: Use `:LspInfo` to check server status
+3. **Restore original**: Replace `init.lua` with `init_original.lua`
 
-<details>
-  <summary>Adding autopairs</summary>
+## Credits
 
-This will automatically install [windwp/nvim-autopairs](https://github.com/windwp/nvim-autopairs) and enable it on startup. For more information, see documentation for [lazy.nvim](https://github.com/folke/lazy.nvim).
-
-In the file: `lua/custom/plugins/autopairs.lua`, add:
-
-```lua
--- File: lua/custom/plugins/autopairs.lua
-
-return {
-  "windwp/nvim-autopairs",
-  -- Optional dependency
-  dependencies = { 'hrsh7th/nvim-cmp' },
-  config = function()
-    require("nvim-autopairs").setup {}
-    -- If you want to automatically add `(` after selecting a function or method
-    local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-    local cmp = require('cmp')
-    cmp.event:on(
-      'confirm_done',
-      cmp_autopairs.on_confirm_done()
-    )
-  end,
-}
-```
-
-</details>
-<details>
-  <summary>Adding a file tree plugin</summary>
-
-This will install the tree plugin and add the command `:Neotree` for you. You can explore the documentation at [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) for more information.
-
-In the file: `lua/custom/plugins/filetree.lua`, add:
-
-```lua
--- Unless you are still migrating, remove the deprecated commands from v1.x
-vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
-
-return {
-  "nvim-neo-tree/neo-tree.nvim",
-  version = "*",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-    "MunifTanjim/nui.nvim",
-  },
-  config = function ()
-    require('neo-tree').setup {}
-  end,
-}
-```
-
-</details>
-
-### FAQ
-
-* What should I do if I already have a pre-existing neovim configuration?
-  * You should back it up, then delete all files associated with it.
-  * This includes your existing init.lua and the neovim files in `~/.local` which can be deleted with `rm -rf ~/.local/share/nvim/`
-* Can I keep my existing configuration in parallel to kickstart?
-  * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME` to maintain multiple configurations. For example you can install the kickstart configuration in `~/.config/nvim-kickstart` and create an alias:
-    ```
-    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
-    ```
-    When you run Neovim using `nvim-kickstart` alias it will use the alternative config directory and the matching local directory `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim distribution that you would like to try out.
-* What if I want to "uninstall" this configuration:
-  * See [lazy.nvim uninstall](https://github.com/folke/lazy.nvim#-uninstalling) information
-* Why is the kickstart `init.lua` a single file? Wouldn't it make sense to split it into multiple files?
-  * The main purpose of kickstart is to serve as a teaching tool and a reference
-    configuration that someone can easily `git clone` as a basis for their own.
-    As you progress in learning Neovim and Lua, you might consider splitting `init.lua`
-    into smaller parts. A fork of kickstart that does this while maintaining the exact
-    same functionality is available here:
-    * [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
-  * Discussions on this topic can be found here:
-    * [Restructure the configuration](https://github.com/nvim-lua/kickstart.nvim/issues/218)
-    * [Reorganize init.lua into a multi-file setup](https://github.com/nvim-lua/kickstart.nvim/pull/473)
-
-### Windows Installation
-
-Installation may require installing build tools, and updating the run command for `telescope-fzf-native`
-
-See `telescope-fzf-native` documentation for [more details](https://github.com/nvim-telescope/telescope-fzf-native.nvim#installation)
-
-This requires:
-
-- Install CMake, and the Microsoft C++ Build Tools on Windows
-
-```lua
-{'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build' }
-```
-
-Alternatively one can install gcc and make which don't require changing the config,
-the easiest way is to use choco:
-
-1. install [chocolatey](https://chocolatey.org/install)
-either follow the instructions on the page or use winget,
-run in cmd as **admin**:
-```
-winget install --accept-source-agreements chocolatey.chocolatey
-```
-
-2. install all requirements using choco, exit previous cmd and
-open a new one so that choco path is set, run in cmd as **admin**:
-```
-choco install -y neovim git ripgrep wget fd unzip gzip mingw make
-```
-
-Then continue with the [Install Kickstart](#Install-Kickstart) step.
+Based on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) with modular organization improvements.
