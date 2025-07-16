@@ -1,3 +1,6 @@
+-- Autocompletion plugin with multiple sources including LSP, snippets, and Copilot
+-- Provides intelligent code completion with snippet support and nice formatting
+-- Customizations: Copilot integration, custom key mappings, and multiple completion sources
 return {
   'hrsh7th/nvim-cmp',
   event = 'InsertEnter',
@@ -33,6 +36,7 @@ return {
       },
       completion = { completeopt = 'menu,menuone,noinsert' },
 
+      -- Custom key mappings for completion
       mapping = cmp.mapping.preset.insert {
         ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -49,6 +53,7 @@ return {
           end
         end, { 'i', 's' }),
       },
+      -- Multiple completion sources with Copilot prioritized
       sources = {
         { name = 'copilot', group_index = 2 },
         { name = 'nvim_lsp', group_index = 2 },
@@ -56,6 +61,7 @@ return {
         { name = 'path', group_index = 2 },
         { name = 'buffer', group_index = 2 },
       },
+      -- Custom formatting with icons and source labels
       formatting = {
         format = lspkind.cmp_format {
           mode = 'symbol',

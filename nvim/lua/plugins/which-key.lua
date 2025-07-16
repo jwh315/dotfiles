@@ -1,3 +1,6 @@
+-- Displays available keybindings in popup when you start typing a command
+-- Helps discover and remember key mappings by showing them in a helpful popup
+-- Customization: Includes spell check mappings under <leader>z for enhanced spell checking
 return {
   'folke/which-key.nvim',
   event = 'VimEnter',

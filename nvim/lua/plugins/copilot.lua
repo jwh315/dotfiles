@@ -1,3 +1,6 @@
+-- GitHub Copilot AI code completion integrated with nvim-cmp
+-- Provides AI-powered code suggestions and completions
+-- Customization: Panel and inline suggestions disabled, only works through nvim-cmp
 return {
   {
     'zbirenbaum/copilot.lua',
@@ -6,10 +9,10 @@ return {
     config = function()
       require('copilot').setup {
         panel = {
-          enabled = false,
+          enabled = false, -- Disabled in favor of cmp integration
         },
         suggestion = {
-          enabled = false,
+          enabled = false, -- Disabled in favor of cmp integration
         },
       }
     end,

@@ -1,3 +1,6 @@
+-- Fuzzy finder for files, LSP symbols, grep results, and more
+-- Highly extendable fuzzy finder with powerful filtering and preview capabilities
+-- Customizations: Shows hidden files, integrates with fzf for performance, extensive keymaps
 return {
   'nvim-telescope/telescope.nvim',
   event = 'VimEnter',
@@ -17,13 +20,13 @@ return {
     require('telescope').setup {
       pickers = {
         find_files = {
-          hidden = true,
+          hidden = true, -- Show hidden files in file search
         },
         grep_string = {
-          additional_args = { '--hidden' },
+          additional_args = { '--hidden' }, -- Search in hidden files
         },
         live_grep = {
-          additional_args = { '--hidden' },
+          additional_args = { '--hidden' }, -- Live grep in hidden files
         },
       },
       extensions = {

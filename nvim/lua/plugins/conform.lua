@@ -1,3 +1,6 @@
+-- Lightweight and fast formatting plugin that can use multiple formatters
+-- Automatically formats code on save with language-specific formatters
+-- Customizations: Excludes 'master-control' files, supports Lua and Terraform formatters
 return {
   'stevearc/conform.nvim',
   opts = {
@@ -5,7 +8,7 @@ return {
     format_on_save = function(bufnr)
       local bufname = vim.api.nvim_buf_get_name(bufnr)
       if string.find(bufname, 'master%-control') then
-        return
+        return -- Skip formatting for master-control files
       end
 
       return {

@@ -1,3 +1,6 @@
+-- Interactive chat interface with GitHub Copilot for code assistance
+-- Provides conversational AI help for coding tasks and commit message generation
+-- Customization: Custom commit prompt with conventional commit format and git context
 local copilot_commit_prompt = [[
 Write a commit message for the staged changes using a conventional commit.
 

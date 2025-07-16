@@ -1,3 +1,6 @@
+-- Language Server Protocol configuration with Mason for easy server management
+-- Provides intelligent code features like go-to-definition, hover, and code actions
+-- Customizations: Integrated with Telescope, supports Lua and Terraform LSP servers
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
@@ -14,6 +17,7 @@ return {
           vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
         end
 
+        -- Telescope-integrated LSP navigation
         map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
         map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
         map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -42,10 +46,11 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+    -- Custom server configurations
     local servers = {
       terraformls = {
         filetypes = { 'tf', 'terraform', 'tfvars', 'hcl', 'terraform-vars' },
-        cmd = { '/opt/homebrew/bin/terraform-ls', 'serve' },
+        cmd = { '/opt/homebrew/bin/terraform-ls', 'serve' }, -- Custom path for terraform-ls
       },
       lua_ls = {
         settings = {

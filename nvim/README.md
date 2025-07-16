@@ -17,7 +17,7 @@ This configuration builds upon kickstart.nvim with a structured, multi-file appr
 - **Completion**: nvim-cmp with multiple sources including Copilot
 - **File Navigation**: Telescope for fuzzy finding, Oil for file management
 - **Git Integration**: Gitsigns, Neogit, and Copilot Chat for commits
-- **Themes**: OneDark (default) and TokyoNight available
+- **Themes**: OneDark (default theme)
 - **Enhanced Editing**: Treesitter, auto-pairs, commenting, hop navigation
 - **Terminal Integration**: Tmux navigator support
 
@@ -85,6 +85,7 @@ Lazy.nvim will automatically install all plugins on first run.
 - **LSP**: `gd` (go to definition), `gr` (references), `K` (hover)
 - **File browser**: `-` (open Oil), `<leader>-` (Oil float)
 - **Navigation**: `f` (hop to character), `<C-h/j/k/l>` (window nav)
+- **Spell check**: `<leader>z` (spell check menu)
 
 ### Adding Plugins
 
@@ -107,10 +108,9 @@ Lazy.nvim will automatically install all plugins on first run.
 
 ### Themes
 
-- **Default**: OneDark
-- **Alternative**: TokyoNight (use `:colorscheme tokyonight-night`)
+- **Default**: OneDark - A clean, dark theme that's easy on the eyes
 
-To change the default theme, modify the priority settings in the theme files.
+To change themes, you can install additional theme plugins by creating new files in `lua/plugins/` following the existing pattern.
 
 ### LSP Configuration
 
