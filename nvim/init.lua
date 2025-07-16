@@ -12,10 +12,11 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- Load plugins
-require('lazy').setup({
+require('lazy').setup {
   -- Import plugins from lua/plugins/ directory
   { import = 'plugins' },
-  
+
   -- Import custom plugins
   { import = 'custom.plugins' },
-})
+}
+

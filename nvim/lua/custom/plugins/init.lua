@@ -7,7 +7,7 @@ local plugin_files = vim.fn.globpath(vim.fn.stdpath('config') .. '/lua/plugins',
 for _, file in ipairs(plugin_files) do
   local plugin_name = vim.fn.fnamemodify(file, ':t:r')
   local plugin_config = require('plugins.' .. plugin_name)
-  
+
   if type(plugin_config) == 'table' then
     if plugin_config[1] then
       -- Multiple plugins in one file
